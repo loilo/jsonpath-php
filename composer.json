@@ -1,0 +1,61 @@
+{
+    "name": "loilo/jsonpath",
+    "description": "Runs RFC9535 compatible JSONPath queries against a data set",
+    "type": "library",
+    "version": "0.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Florian Reuschel",
+            "email": "florian@loilo.de"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.0",
+        "phpstan/phpstan": "^2.1",
+        "squizlabs/php_codesniffer": "^3.6"
+    },
+    "autoload": {
+        "files": [
+            "src/comparator/compare-nulls.php",
+            "src/comparator/compare-arrays.php",
+            "src/comparator/compare-nodes.php",
+            "src/comparator/compare-booleans.php",
+            "src/comparator/compare-objects.php",
+            "src/comparator/compare-strings.php",
+            "src/comparator/compare-numbers.php",
+            "src/parsers/array-slice-selector.php",
+            "src/parsers/function-extensions.php",
+            "src/parsers/root.php",
+            "src/parsers/filter-selector.php",
+            "src/types/nothing.php",
+            "src/PeggyParser.php",
+            "src/parser.php",
+            "src/JsonPath.php",
+            "src/utils/is-equal.php",
+            "src/utils/traverse-descendant.php",
+            "src/utils/helpers.php",
+            "src/utils/convert-i-regexp-to-php-regexp.php",
+            "src/functions/function-types.php",
+            "src/functions/search.php",
+            "src/functions/value.php",
+            "src/functions/count.php",
+            "src/functions/function-definitions.php",
+            "src/functions/match.php",
+            "src/functions/length.php",
+            "src/utils.php"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2"
+        },
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

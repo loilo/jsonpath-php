@@ -1,0 +1,37 @@
+arrowParens: avoid
+bracketSpacing: true
+htmlWhitespaceSensitivity: css
+insertPragma: false
+jsxBracketSameLine: false
+jsxSingleQuote: false
+printWidth: 100
+proseWrap: preserve
+requirePragma: false
+semi: false
+singleQuote: true
+tabWidth: 4
+trailingComma: none
+useTabs: true
+endOfLine: lf
+phpVersion: '7.4'
+
+overrides:
+  - files: 'package.json'
+    options:
+      tabWidth: 2
+      useTabs: false
+  - files: '.prettierrc'
+    options:
+      tabWidth: 2
+      useTabs: false
+  - files: 'composer.json'
+    options:
+      tabWidth: 4
+      useTabs: false
+  - files: '.github/**/*.yml'
+    options:
+      tabWidth: 2
+      useTabs: false
+  - files: 'tests/**/*.php'
+    options:
+      printWidth: 80

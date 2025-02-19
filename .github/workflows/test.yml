@@ -1,0 +1,32 @@
+name: Test CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    paths-ignore:
+      - '*.md'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        php-version: [8.2, 8.3, 8.4]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          submodules: true
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer
+      - run: composer install
+      - run: vendor/bin/phpcs
+      - run: vendor/bin/phpstan
+      - run: vendor/bin/pest

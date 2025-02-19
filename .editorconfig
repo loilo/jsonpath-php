@@ -1,0 +1,26 @@
+root = true
+
+[*]
+end_of_line = LF
+indent_size = 4
+indent_style = tab
+insert_final_newline = true
+
+[.github/**/*.yml]
+indent_size = 2
+indent_style = space
+
+[composer.json]
+indent_style = space
+
+[package.json]
+indent_size = 2
+indent_style = space
+
+[.prettierrc]
+indent_size = 2
+indent_style = space
+
+[*.pegjs]
+indent_size = 2
+indent_style = space

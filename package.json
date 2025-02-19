@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@prettier/plugin-php": "^0.22.4",
+    "peggy": "^3.0.2",
+    "phpeggy": "^2.0.1",
+    "prettier": "^3.5.1"
+  },
+  "scripts": {
+    "generate-parser": "node src/grammar/generate.js",
+    "format": "prettier --plugin @prettier/plugin-php --write composer.json --write package.json --write 'src/**/*.js' --write 'src/**/*.php' --write 'tests/**/*.php'"
+  }
+}
