@@ -8,7 +8,7 @@
 
 _An implementation of RFC 9535 [JSONPath](http://goessner.net/articles/JsonPath/)_
 
-[![Tests](https://badgen.net/github/checks/loilo/jsonpath-php/master)](https://github.com/loilo/jsonpath-php/actions)
+[![Tests](https://badgen.net/github/checks/loilo/jsonpath-php/main)](https://github.com/loilo/jsonpath-php/actions)
 [![Packagist](https://badgen.net/packagist/v/loilo/jsonpath)](https://packagist.org/packages/loilo/jsonpath)
 ![PHP Version](https://badgen.net/packagist/php/loilo/jsonpath)
 
