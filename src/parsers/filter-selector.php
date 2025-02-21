@@ -138,7 +138,7 @@ function apply_query($query, $root_node, $json)
 		case 'CurrentNode':
 			return sizeof(apply_current_node($query, $root_node, [$json])) > 0;
 		case 'Root':
-			return sizeof(apply_root($query, $json)) > 0;
+			return sizeof(apply_root($query, $root_node)) > 0;
 	}
 
 	return false;

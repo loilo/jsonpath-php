@@ -14,7 +14,7 @@ _An implementation of RFC 9535 [JSONPath](http://goessner.net/articles/JsonPath/
 
 This is a PHP implementation of JSONPath, a query language for JSON. It aims for 100% compatibilty with the JSONPath syntax standardized in [RFC 9535](https://datatracker.ietf.org/doc/rfc9535/).
 
-Currently, this library passes 99% of the work-in-progress [JSONPath Compliance Test Suite](https://github.com/jsonpath-standard/jsonpath-compliance-test-suite) (with the test suite version on [Jan 14, 2025](https://github.com/jsonpath-standard/jsonpath-compliance-test-suite/tree/9277705cda4489c3d0d984831e7656e48145399b)). All of the the missing 1% are UTF-16 related tests, which should not affect most day-to-day users (and which I'm not sure how to implement in PHP — any help is appreciated!)
+Currently, this library passes 99% of the work-in-progress [JSONPath Compliance Test Suite](https://github.com/jsonpath-standard/jsonpath-compliance-test-suite) (with the test suite version on [Feb 21, 2025](https://github.com/jsonpath-standard/jsonpath-compliance-test-suite/tree/9cf4a7517828d4f18557959682a4767de4735f94)). All of the the missing 1% are UTF-16 related tests, which should not affect most day-to-day users (and which I'm not sure how to implement in PHP — any help is appreciated!)
 
 ## Installation
 

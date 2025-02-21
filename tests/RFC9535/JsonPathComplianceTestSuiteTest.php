@@ -31,9 +31,6 @@ describe('JSONPath Compliance Test Suite', function () {
 			'Skip UTF-16 related tests',
 		'name selector, double quotes, supplementary plane character' =>
 			'Skip UTF-16 related tests',
-
-		'filter, absolute existence, with segments' =>
-			'Not currently supported in jsonpath-js, waiting for upstream fix',
 	];
 
 	foreach ($cts->tests as $index => $test_case) {
