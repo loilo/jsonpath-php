@@ -10,7 +10,6 @@ namespace Loilo\JsonPath;
 function apply_slice_selector($selector, $json)
 {
 	if (!is_json_array($json)) {
-		// throw new Error(`JSON node ${JSON.stringify(json)} is not an array`);
 		return [];
 	}
 

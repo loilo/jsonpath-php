@@ -42,6 +42,7 @@ function apply_segment($segment, $root_node, $json)
 			return apply_selector($selector, $root_node, $json);
 		}, $segment);
 		$segment_result = array_flatten($selector_results);
+
 		return $segment_result;
 	}
 
@@ -104,6 +105,7 @@ function apply_member_name_selector($selector, $json)
 	if (json_object_has_key($json, $selector->member)) {
 		return [json_get($json, $selector->member)];
 	}
+
 	return [];
 }
 
@@ -111,16 +113,11 @@ function apply_member_name_selector($selector, $json)
 // An index selector <index> matches at most one array element value.
 function apply_index_selector($node, $json)
 {
-	if (is_json_array($json)) {
-		if ($node->index < sizeof($json)) {
-			$index = normalize_index($node->index, sizeof($json));
-			if ($index === null) {
-				return [];
-			} else {
-				return [$json[$index]];
-			}
-		}
+	if (!is_json_array($json)) {
 		return [];
 	}
-	return [];
+
+	$index = normalize_index($node->index, sizeof($json));
+
+	return $index === null ? [] : [$json[$index]];
 }
