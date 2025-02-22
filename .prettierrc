@@ -35,3 +35,6 @@ overrides:
   - files: 'tests/**/*.php'
     options:
       printWidth: 80
+
+plugins:
+  - '@prettier/plugin-php'

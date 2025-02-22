@@ -7,5 +7,8 @@
 		"titleBar.inactiveBackground": "#f5be1b99",
 		"titleBar.inactiveForeground": "#15202b99"
 	},
-	"peacock.color": "#F5BE1B"
+	"peacock.color": "#F5BE1B",
+	"prettier.documentSelectors": [
+		"**/*.{js,jsx,ts,tsx,vue,html,css,scss,less,json,md,mdx,graphql,yaml,yml,php}"
+	]
 }
