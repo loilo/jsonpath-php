@@ -21,19 +21,12 @@ function apply_filter_selector($selector, $root_node, $json)
 function apply_filter_expression($expr, $root_node, $json)
 {
 	$exp_type = $expr->type;
-	switch ($exp_type) {
-		case 'ComparisonExpr':
-			return apply_compare($expr, $root_node, $json);
-		case 'TestExpr':
-			return apply_test($expr, $root_node, $json);
-		case 'LogicalBinary':
-		case 'LogicalUnary':
-			return apply_logical($expr, $root_node, $json);
-		default:
-			throw new \Exception("Unexpected expression type: $exp_type");
-	}
-
-	return false;
+	return match ($exp_type) {
+		'ComparisonExpr' => apply_compare($expr, $root_node, $json),
+		'TestExpr' => apply_test($expr, $root_node, $json),
+		'LogicalBinary', 'LogicalUnary' => apply_logical($expr, $root_node, $json),
+		default => throw new \Exception("Unexpected expression type: $exp_type"),
+	};
 }
 
 function apply_compare($compare, $root_node, $json)
@@ -97,17 +90,17 @@ function apply_comparable($comparable, $root_node, $json)
 {
 	// These can be obtained via literal values; singular queries,
 	// each of which selects at most one node
-	switch ($comparable->type) {
-		case 'Literal':
-			return $comparable->member;
-		case 'CurrentNode':
-			$result = apply_current_node($comparable, $root_node, [$json]);
-			return array_key_exists(0, $result) ? $result[0] : nothing();
-		case 'Root':
-			return apply_root($comparable, $root_node)[0] ?? nothing();
-		case 'FunctionExpr':
-			return apply_function($comparable, $root_node, $json);
-	}
+	return match ($comparable->type) {
+		'Literal' => $comparable->member,
+		'CurrentNode' => array_key_exists(
+			0,
+			$result = apply_current_node($comparable, $root_node, [$json]),
+		)
+			? $result[0]
+			: nothing(),
+		'Root' => apply_root($comparable, $root_node)[0] ?? nothing(),
+		'FunctionExpr' => apply_function($comparable, $root_node, $json),
+	};
 }
 
 function apply_test($expr, $root_node, $json)
@@ -146,14 +139,11 @@ function apply_query($query, $root_node, $json)
 
 function apply_logical($expr, $root_node, $json)
 {
-	switch ($expr->operator) {
-		case '||':
-			return apply_or($expr, $root_node, $json);
-		case '&&':
-			return apply_and($expr, $root_node, $json);
-		case '!':
-			return apply_not($expr, $root_node, $json);
-	}
+	return match ($expr->operator) {
+		'||' => apply_or($expr, $root_node, $json),
+		'&&' => apply_and($expr, $root_node, $json),
+		'!' => apply_not($expr, $root_node, $json),
+	};
 }
 
 function apply_or($or, $root_node, $json)

@@ -13,32 +13,13 @@ function compare_numbers($operator, $a, $b)
 		$b = floatval($b);
 	}
 
-	switch ($operator) {
-		case '==':
-			return $a === $b;
-		case '!=':
-			return $a !== $b;
-		case '<':
-			if (!is_number($b)) {
-				return false;
-			}
-			return $a < $b;
-		case '<=':
-			if (!is_number($b)) {
-				return false;
-			}
-			return $a <= $b;
-		case '>':
-			if (!is_number($b)) {
-				return false;
-			}
-			return $a > $b;
-		case '>=':
-			if (!is_number($b)) {
-				return false;
-			}
-			return $a >= $b;
-		default:
-			throw new \InvalidArgumentException("Invalid comparison operator: $operator");
-	}
+	return match ($operator) {
+		'==' => $a === $b,
+		'!=' => $a !== $b,
+		'<' => is_number($b) && $a < $b,
+		'<=' => is_number($b) && $a <= $b,
+		'>' => is_number($b) && $a > $b,
+		'>=' => is_number($b) && $a >= $b,
+		default => throw new \InvalidArgumentException("Invalid comparison operator: $operator"),
+	};
 }

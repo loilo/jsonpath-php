@@ -9,20 +9,13 @@ namespace Loilo\JsonPath;
 // less than the remainder of the second string.
 function compare_strings($operator, $a, $b)
 {
-	switch ($operator) {
-		case '==':
-			return $a === $b;
-		case '!=':
-			return $a !== $b;
-		case '<':
-			return $a < $b;
-		case '<=':
-			return $a <= $b;
-		case '>':
-			return $a > $b;
-		case '>=':
-			return $a >= $b;
-		default:
-			throw new \InvalidArgumentException("Invalid comparison operator: $operator");
-	}
+	return match ($operator) {
+		'==' => $a === $b,
+		'!=' => $a !== $b,
+		'<' => $a < $b,
+		'<=' => $a <= $b,
+		'>' => $a > $b,
+		'>=' => $a >= $b,
+		default => throw new \InvalidArgumentException("Invalid comparison operator: $operator"),
+	};
 }

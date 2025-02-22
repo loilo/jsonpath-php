@@ -61,22 +61,14 @@ function apply_segment($segment, $root_node, $json)
 // A selector produces a nodelist consisting of zero or more children of the input value.
 function apply_selector($selector, $root_node, $json)
 {
-	$type = $selector->type;
-	switch ($type) {
-		case 'WildcardSelector':
-			return apply_wildcard_selector($selector, $json);
-		case 'IndexSelector':
-			return apply_index_selector($selector, $json);
-		case 'SliceSelector':
-			return apply_slice_selector($selector, $json);
-		case 'MemberNameShorthand':
-		case 'NameSelector':
-			return apply_member_name_selector($selector, $json);
-		case 'FilterSelector':
-			return apply_filter_selector($selector, $root_node, $json);
-		default:
-			throw new \Exception('Unknown selector type: ' . $type);
-	}
+	return match ($selector->type) {
+		'WildcardSelector' => apply_wildcard_selector($selector, $json),
+		'IndexSelector' => apply_index_selector($selector, $json),
+		'SliceSelector' => apply_slice_selector($selector, $json),
+		'MemberNameShorthand', 'NameSelector' => apply_member_name_selector($selector, $json),
+		'FilterSelector' => apply_filter_selector($selector, $root_node, $json),
+		default => throw new \Exception('Unknown selector type: ' . $selector->type),
+	};
 }
 
 // 2.3.2. Wildcard Selector

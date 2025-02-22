@@ -6,22 +6,13 @@ namespace Loilo\JsonPath;
 // the first array is equal to the corresponding element of the second array, or
 function compare_arrays($operator, $a, $b)
 {
-	switch ($operator) {
-		case '==':
-			return is_equal($a, $b);
-		case '!=':
-			return !is_equal($a, $b);
-		case '<':
-			// Not defined
-			return false;
-		case '<=':
-			return is_equal($a, $b);
-		case '>':
-			// Not defined
-			return false;
-		case '>=':
-			return is_equal($a, $b);
-		default:
-			throw new \InvalidArgumentException("Unsupported operator: $operator");
-	}
+	return match ($operator) {
+		'==' => is_equal($a, $b),
+		'!=' => !is_equal($a, $b),
+		'<' => false, // Not defined
+		'<=' => is_equal($a, $b),
+		'>' => false, // Not defined
+		'>=' => is_equal($a, $b),
+		default => throw new \InvalidArgumentException("Unsupported operator: $operator"),
+	};
 }

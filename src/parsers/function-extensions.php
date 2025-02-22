@@ -14,39 +14,23 @@ function apply_function($func, $root_node, $node)
 		return apply_function_argument($arg, $root_node, $node);
 	}, $func->args);
 
-	switch ($func->name) {
-		case 'length':
-			$args = extract_args($length_function, $evaluated_args);
-			return $length_function->function(...$args);
-		case 'count':
-			$args = extract_args($count_function, $evaluated_args);
-			return $count_function->function(...$args);
-		case 'match':
-			$args = extract_args($match_function, $evaluated_args);
-			return $match_function->function(...$args);
-		case 'search':
-			$args = extract_args($search_function, $evaluated_args);
-			return $search_function->function(...$args);
-		case 'value':
-			$args = extract_args($value_function, $evaluated_args);
-			return $value_function->function(...$args);
-	}
-
-	return nothing();
+	return match ($func->name) {
+		'length' => $length_function->function(...extract_args($length_function, $evaluated_args)),
+		'count' => $count_function->function(...extract_args($count_function, $evaluated_args)),
+		'match' => $match_function->function(...extract_args($match_function, $evaluated_args)),
+		'search' => $search_function->function(...extract_args($search_function, $evaluated_args)),
+		'value' => $value_function->function(...extract_args($value_function, $evaluated_args)),
+		default => nothing(),
+	};
 }
 
 function apply_function_argument($argument, $root_node, $json)
 {
-	switch ($argument->type) {
-		case 'Literal':
-			return $argument->member;
-		case 'CurrentNode':
-			return apply_current_node($argument, $root_node, [$json]);
-		case 'Root':
-			return apply_root($argument, $root_node);
-		case 'FunctionExpr':
-			return apply_function($argument, $root_node, $json);
-		default:
-			throw new \Exception('Unknown argument type "' . $argument->type . '"');
-	}
+	return match ($argument->type) {
+		'Literal' => $argument->member,
+		'CurrentNode' => apply_current_node($argument, $root_node, [$json]),
+		'Root' => apply_root($argument, $root_node),
+		'FunctionExpr' => apply_function($argument, $root_node, $json),
+		default => throw new \Exception('Unknown argument type "' . $argument->type . '"'),
+	};
 }

@@ -10,22 +10,13 @@ function compare_nodes($operator, $a, $b)
 {
 	$nothing = nothing();
 
-	switch ($operator) {
-		case '==':
-			return ($a === $nothing || $b === $nothing) && $a === $b;
-		case '!=':
-			return ($a === $nothing || $b === $nothing) && $a !== $b;
-		case '<':
-			// Not defined
-			return false;
-		case '<=':
-			return ($a === $nothing || $b === $nothing) && $a === $b;
-		case '>':
-			// Not defined
-			return false;
-		case '>=':
-			return ($a === $nothing || $b === $nothing) && $a === $b;
-		default:
-			throw new \InvalidArgumentException("Invalid comparison operator: $operator");
-	}
+	return match ($operator) {
+		'==' => ($a === $nothing || $b === $nothing) && $a === $b,
+		'!=' => ($a === $nothing || $b === $nothing) && $a !== $b,
+		'<' => false, // Not defined
+		'<=' => ($a === $nothing || $b === $nothing) && $a === $b,
+		'>' => false, // Not defined
+		'>=' => ($a === $nothing || $b === $nothing) && $a === $b,
+		default => throw new \InvalidArgumentException("Invalid comparison operator: $operator"),
+	};
 }

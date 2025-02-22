@@ -7,22 +7,13 @@ namespace Loilo\JsonPath;
 // for each of those names, the values associated with the name by the objects are equal.
 function compare_objects($operator, $a, $b)
 {
-	switch ($operator) {
-		case '==':
-			return is_equal($a, $b);
-		case '!=':
-			return !is_equal($a, $b);
-		case '<':
-			// Not defined
-			return false;
-		case '<=':
-			return is_equal($a, $b);
-		case '>':
-			// Not defined
-			return false;
-		case '>=':
-			return is_equal($a, $b);
-		default:
-			throw new \InvalidArgumentException("Invalid comparison operator: $operator");
-	}
+	return match ($operator) {
+		'==' => is_equal($a, $b),
+		'!=' => !is_equal($a, $b),
+		'<' => false, // Not defined
+		'<=' => is_equal($a, $b),
+		'>' => false, // Not defined
+		'>=' => is_equal($a, $b),
+		default => throw new \InvalidArgumentException("Invalid comparison operator: $operator"),
+	};
 }
