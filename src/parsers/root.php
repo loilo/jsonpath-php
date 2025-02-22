@@ -113,8 +113,12 @@ function apply_index_selector($node, $json)
 {
 	if (is_json_array($json)) {
 		if ($node->index < sizeof($json)) {
-			$result = array_at($json, $node->index);
-			return $result === null ? [] : [$result];
+			$index = normalize_index($node->index, sizeof($json));
+			if ($index === null) {
+				return [];
+			} else {
+				return [$json[$index]];
+			}
 		}
 		return [];
 	}

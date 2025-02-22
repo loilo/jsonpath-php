@@ -84,14 +84,20 @@ function is_number($value): bool
 }
 
 /**
- * Get the value at a given index of an array or null if it does not exist
- * Allow to use negative indexes
+ * Normalize an index for a given array length to be positive
+ * or null if it is out of bounds
+ * An index is out of bounds if it is less than the negative length
+ * or greater than or equal to the length
  */
-function array_at(array $array, int $index)
+function normalize_index($index, int $length): ?int
 {
-	if ($index < 0) {
-		$index += sizeof($array);
+	if ($index < -$length || $index >= $length) {
+		return null;
 	}
 
-	return $array[$index] ?? null;
+	if ($index < 0) {
+		$index += $length;
+	}
+
+	return $index;
 }
