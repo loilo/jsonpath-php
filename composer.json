@@ -38,6 +38,7 @@
             "src/utils/is-equal.php",
             "src/utils/traverse-descendant.php",
             "src/utils/helpers.php",
+            "src/utils/array.php",
             "src/utils/convert-i-regexp-to-php-regexp.php",
             "src/functions/function-types.php",
             "src/functions/search.php",

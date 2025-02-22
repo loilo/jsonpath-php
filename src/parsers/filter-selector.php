@@ -13,7 +13,7 @@ function apply_filter_selector($selector, $root_node, $json)
 		return [];
 	}
 
-	return array_filter_2(to_array($json), function ($item) use ($selector, $root_node) {
+	return Array\filter(to_array($json), function ($item) use ($selector, $root_node) {
 		return apply_filter_expression($selector->expr, $root_node, $item);
 	});
 }
