@@ -7,18 +7,18 @@ namespace Loilo\JsonPath;
 // It matches elements from arrays starting at index < start >
 // and ending at(but not including)<end>,
 // while incrementing by step with a default of 1.
-function apply_slice_selector($selector, $json)
+function apply_slice_selector($selector, Node $node)
 {
-	if (!is_json_array($json)) {
+	if (!is_json_array($node->value)) {
 		return [];
 	}
 
 	$step = $selector->step ?? 1;
-	$start = $selector->start ?? ($step >= 0 ? 0 : sizeof($json) - 1);
-	$end = $selector->end ?? ($step >= 0 ? sizeof($json) : -sizeof($json) - 1);
+	$start = $selector->start ?? ($step >= 0 ? 0 : sizeof($node->value) - 1);
+	$end = $selector->end ?? ($step >= 0 ? sizeof($node->value) : -sizeof($node->value) - 1);
 	$array = [];
 
-	[$lower, $upper] = bounds($start, $end, $step, sizeof($json));
+	[$lower, $upper] = bounds($start, $end, $step, sizeof($node->value));
 
 	// IF step > 0 THEN
 	//
@@ -39,11 +39,11 @@ function apply_slice_selector($selector, $json)
 	// END IF
 	if ($step > 0) {
 		for ($i = $lower; $i < $upper; $i += $step) {
-			$array[] = $json[$i];
+			$array[] = add_index_path($node, $node->value[$i], $i);
 		}
 	} elseif ($step < 0) {
 		for ($i = $upper; $lower < $i; $i += $step) {
-			$array[] = $json[$i];
+			$array[] = add_index_path($node, $node->value[$i], $i);
 		}
 	}
 

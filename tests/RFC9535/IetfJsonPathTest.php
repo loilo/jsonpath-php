@@ -60,12 +60,7 @@ describe('RFC 9535 JSONPath: Query Expressions for JSON', function () {
 			});
 
 			it('Non-deterministic ordering', function () use ($json) {
-				test_json_path_ignoring_array_order($json, '$.o[*, *]', [
-					1,
-					2,
-					1,
-					2,
-				]);
+				test_json_path($json, '$.o[*, *]', [1, 2, 1, 2]);
 			});
 
 			it('Array members', function () use ($json) {

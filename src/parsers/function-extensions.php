@@ -24,13 +24,13 @@ function apply_function($func, $root_node, $node)
 	};
 }
 
-function apply_function_argument($argument, $root_node, $json)
+function apply_function_argument($argument, $root_node, Node $node)
 {
 	return match ($argument->type) {
 		'Literal' => $argument->member,
-		'CurrentNode' => apply_current_node($argument, $root_node, [$json]),
+		'CurrentNode' => apply_current_node($argument, $root_node, [$node]),
 		'Root' => apply_root($argument, $root_node),
-		'FunctionExpr' => apply_function($argument, $root_node, $json),
+		'FunctionExpr' => apply_function($argument, $root_node, $node),
 		default => throw new \Exception('Unknown argument type "' . $argument->type . '"'),
 	};
 }

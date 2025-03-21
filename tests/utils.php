@@ -14,3 +14,13 @@ function test_json_path_ignoring_array_order($json, $jsonpath, $expected)
 	$result = $path->find($json);
 	expect($result)->toEqualCanonicalizing($expected);
 }
+
+function test_normalized_path($json, $jsonpath, $expected)
+{
+	$path = new JsonPath($jsonpath);
+	$paths = array_map(function ($item) {
+		return $item['path'];
+	}, $path->paths($json));
+
+	expect($paths)->toEqual($expected);
+}

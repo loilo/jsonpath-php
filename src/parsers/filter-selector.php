@@ -2,37 +2,37 @@
 
 namespace Loilo\JsonPath;
 
-function apply_filter_selector($selector, $root_node, $json)
+function apply_filter_selector($selector, $root_node, Node $node)
 {
 	// The filter selector works with arrays and objects exclusively.
 	// Its result is a list of(zero, one, multiple, or all)
 	// their array elements or member values, respectively.
 	// Applied to a primitive value,
 	// it selects nothing(and therefore does not contribute to the result of the filter selector).
-	if (is_json_primitive($json)) {
+	if (is_json_primitive($node->value)) {
 		return [];
 	}
 
-	return Array\filter(to_array($json), function ($item) use ($selector, $root_node) {
-		return apply_filter_expression($selector->expr, $root_node, $item);
+	return Array\filter(enumerate_node($node), function (Node $node) use ($selector, $root_node) {
+		return apply_filter_expression($selector->expr, $root_node, $node);
 	});
 }
 
-function apply_filter_expression($expr, $root_node, $json)
+function apply_filter_expression($expr, $root_node, Node $node)
 {
 	$exp_type = $expr->type;
 	return match ($exp_type) {
-		'ComparisonExpr' => apply_compare($expr, $root_node, $json),
-		'TestExpr' => apply_test($expr, $root_node, $json),
-		'LogicalBinary', 'LogicalUnary' => apply_logical($expr, $root_node, $json),
+		'ComparisonExpr' => apply_compare($expr, $root_node, $node),
+		'TestExpr' => apply_test($expr, $root_node, $node),
+		'LogicalBinary', 'LogicalUnary' => apply_logical($expr, $root_node, $node),
 		default => throw new \Exception("Unexpected expression type: $exp_type"),
 	};
 }
 
-function apply_compare($compare, $root_node, $json)
+function apply_compare($compare, $root_node, Node $node)
 {
-	$left = apply_comparable($compare->left, $root_node, $json);
-	$right = apply_comparable($compare->right, $root_node, $json);
+	$left = apply_comparable($compare->left, $root_node, $node);
+	$right = apply_comparable($compare->right, $root_node, $node);
 
 	return eval_compare($left, $right, $compare->operator);
 }
@@ -86,7 +86,7 @@ function apply_current_node($current_node, $root_node, $node_list)
 	return apply_segments($current_node->segments, $root_node, $node_list);
 }
 
-function apply_comparable($comparable, $root_node, $json)
+function apply_comparable($comparable, $root_node, Node $node)
 {
 	// These can be obtained via literal values; singular queries,
 	// each of which selects at most one node
@@ -94,25 +94,25 @@ function apply_comparable($comparable, $root_node, $json)
 		'Literal' => $comparable->member,
 		'CurrentNode' => array_key_exists(
 			0,
-			$result = apply_current_node($comparable, $root_node, [$json]),
+			$result = apply_current_node($comparable, $root_node, [$node]),
 		)
-			? $result[0]
+			? $result[0]->value
 			: nothing(),
-		'Root' => apply_root($comparable, $root_node)[0] ?? nothing(),
-		'FunctionExpr' => apply_function($comparable, $root_node, $json),
+		'Root' => apply_root($comparable, $root_node)[0]?->value ?? nothing(),
+		'FunctionExpr' => apply_function($comparable, $root_node, $node),
 	};
 }
 
-function apply_test($expr, $root_node, $json)
+function apply_test($expr, $root_node, Node $node)
 {
-	return apply_query($expr->query, $root_node, $json);
+	return apply_query($expr->query, $root_node, $node);
 }
 
-function apply_query($query, $root_node, $json)
+function apply_query($query, $root_node, Node $node)
 {
 	switch ($query->type) {
 		case 'FunctionExpr':
-			$function_result = apply_function($query, $root_node, $json);
+			$function_result = apply_function($query, $root_node, $node);
 
 			// LogicalType
 			if ($function_result === LogicalType::true()) {
@@ -129,7 +129,7 @@ function apply_query($query, $root_node, $json)
 			// ValueType
 			throw new \Exception("Function {$query->name} result must be compared");
 		case 'CurrentNode':
-			return sizeof(apply_current_node($query, $root_node, [$json])) > 0;
+			return sizeof(apply_current_node($query, $root_node, [$node])) > 0;
 		case 'Root':
 			return sizeof(apply_root($query, $root_node)) > 0;
 	}
@@ -137,32 +137,32 @@ function apply_query($query, $root_node, $json)
 	return false;
 }
 
-function apply_logical($expr, $root_node, $json)
+function apply_logical($expr, $root_node, Node $node)
 {
 	return match ($expr->operator) {
-		'||' => apply_or($expr, $root_node, $json),
-		'&&' => apply_and($expr, $root_node, $json),
-		'!' => apply_not($expr, $root_node, $json),
+		'||' => apply_or($expr, $root_node, $node),
+		'&&' => apply_and($expr, $root_node, $node),
+		'!' => apply_not($expr, $root_node, $node),
 	};
 }
 
-function apply_or($or, $root_node, $json)
+function apply_or($or, $root_node, Node $node)
 {
 	// TODO: make efficient
-	$left = apply_filter_expression($or->left, $root_node, $json);
-	$right = apply_filter_expression($or->right, $root_node, $json);
+	$left = apply_filter_expression($or->left, $root_node, $node);
+	$right = apply_filter_expression($or->right, $root_node, $node);
 	return $left || $right;
 }
 
-function apply_and($and, $root_node, $json)
+function apply_and($and, $root_node, Node $node)
 {
-	$left = apply_filter_expression($and->left, $root_node, $json);
-	$right = apply_filter_expression($and->right, $root_node, $json);
+	$left = apply_filter_expression($and->left, $root_node, $node);
+	$right = apply_filter_expression($and->right, $root_node, $node);
 	return $left && $right;
 }
 
-function apply_not($not, $root_node, $json)
+function apply_not($not, $root_node, Node $node)
 {
-	$result = apply_filter_expression($not->expr, $root_node, $json);
+	$result = apply_filter_expression($not->expr, $root_node, $node);
 	return !$result;
 }

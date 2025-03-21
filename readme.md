@@ -27,7 +27,7 @@ Note that at least PHP 8.0 is needed to use jsonpath-php. For technical reasons,
 ## Usage
 
 ```php
-use Loilo\JSONPath\JsonPath;
+use Loilo\JsonPath\JsonPath;
 
 $query = new JsonPath('$.users[*].name');
 

@@ -2,19 +2,16 @@
 
 namespace Loilo\JsonPath;
 
-function traverse_descendant($json)
+/**
+ * @return Node[]
+ */
+function traverse_descendant(Node $node)
 {
 	$node_list = [];
-	array_push($node_list, $json);
+	array_push($node_list, $node);
 
-	if (is_json_array($json)) {
-		foreach ($json as $node) {
-			array_push($node_list, ...traverse_descendant($node));
-		}
-	} elseif (is_json_object($json)) {
-		foreach ((array) $json as $value) {
-			array_push($node_list, ...traverse_descendant($value));
-		}
+	foreach (enumerate_node($node) as $child) {
+		array_push($node_list, ...traverse_descendant($child));
 	}
 
 	return $node_list;

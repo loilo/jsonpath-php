@@ -23,7 +23,7 @@ function value_function(): FunctionDefinition
 				// Its only argument is an instance of NodesType (possibly taken from a filter-query, as in the example above). The result is an instance of ValueType.
 				// If the argument contains a single node, the result is the value of the node.
 				if (sizeof($nodes) === 1) {
-					return $nodes[0];
+					return $nodes[0]->value;
 				}
 
 				// If the argument is the empty nodelist or contains multiple nodes, the result is Nothing.

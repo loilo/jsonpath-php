@@ -64,6 +64,20 @@ function filter(array $array, ?callable $callback = null): array
 }
 
 /**
+ * Check if all elements of an array satisfy a condition
+ */
+function every(array $array, callable $callback): bool
+{
+	foreach ($array as $key => $value) {
+		if (!$callback($value, $key, $array)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
  * Check if an array is a list
  */
 function is_list(array $array): bool

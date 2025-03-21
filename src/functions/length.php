@@ -36,7 +36,7 @@ function length_function(): FunctionDefinition
 
 				// If the argument value is an object, the result is the number of members in the object.
 				if (is_json_object($node)) {
-					return sizeof(get_object_vars($node));
+					return sizeof(is_array($node) ? $node : get_object_vars($node));
 				}
 
 				// For any other argument value, the result is the special result Nothing.

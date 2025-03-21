@@ -25,12 +25,15 @@ class ValueTypeDef implements FunctionTypeDef
 		if (is_json_primitive($arg)) {
 			return $arg;
 		}
-		if (is_json_array($arg)) {
+		if (is_node($arg)) {
+			return $arg->value;
+		}
+		if (is_node_list($arg)) {
 			if (sizeof($arg) === 0) {
 				return nothing();
 			}
 			if (sizeof($arg) === 1) {
-				return $arg[0];
+				return $arg[0]->value;
 			}
 		}
 
@@ -51,7 +54,7 @@ class NodesTypeDef implements FunctionTypeDef
 
 	public function convert($arg)
 	{
-		if (is_json_array($arg)) {
+		if (is_node_list($arg)) {
 			return $arg;
 		}
 

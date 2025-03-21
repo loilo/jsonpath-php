@@ -34,33 +34,57 @@ describe('JSONPath Compliance Test Suite', function () {
 	];
 
 	foreach ($cts->tests as $index => $test_case) {
+		$pest_cases = [];
 		if ($test_case->invalid_selector ?? false) {
-			$pest_case = test("{$index}: {$test_case->name}", function () use (
-				$test_case
-			) {
-				expect(
-					fn() => (new JsonPath($test_case->selector))->find(
-						(object) [
-							'a' => 'b',
-							'c' => (object) ['d' => ['e', 'f'], 'g' => 'h'],
-						],
-					),
-				)->toThrow(Exception::class);
-			});
+			$pest_cases[] = test(
+				"{$index}: {$test_case->name}",
+				function () use ($test_case) {
+					expect(function () use ($test_case) {
+						try {
+							(new JsonPath($test_case->selector))->find(
+								(object) [
+									'a' => 'b',
+									'c' => (object) [
+										'd' => ['e', 'f'],
+										'g' => 'h',
+									],
+								],
+							);
+						} catch (Throwable $e) {
+							throw new Exception();
+						}
+					})->toThrow(Exception::class);
+				},
+			);
 		} else {
-			$pest_case = test("{$index}: $test_case->name", function () use (
+			$pest_cases[] = test("{$index}: $test_case->name", function () use (
 				$test_case
 			) {
 				test_json_path(
-					$test_case->document,
-					$test_case->selector,
-					$test_case->result ?? $test_case->results[0],
+					json: $test_case->document,
+					jsonpath: $test_case->selector,
+					expected: $test_case->result ?? $test_case->results[0],
 				);
 			});
+
+			if ($test_case->result_paths ?? false) {
+				$pest_cases[] = test(
+					"{$index}: {$test_case->name} Normalized Path",
+					function () use ($test_case) {
+						test_normalized_path(
+							json: $test_case->document,
+							jsonpath: $test_case->selector,
+							expected: $test_case->result_paths,
+						);
+					},
+				);
+			}
 		}
 
 		if (isset($skip_tests[$test_case->name])) {
-			$pest_case->skip($skip_tests[$test_case->name]);
+			foreach ($pest_cases as $pest_case) {
+				$pest_case->skip($skip_tests[$test_case->name]);
+			}
 		}
 	}
 });
