@@ -1,10 +1,10 @@
 {
   "type": "module",
   "dependencies": {
-    "@prettier/plugin-php": "^0.22.4",
+    "@prettier/plugin-php": "^0.24.0",
     "peggy": "^3.0.2",
     "phpeggy": "^2.0.1",
-    "prettier": "^3.5.1"
+    "prettier": "^3.8.1"
   },
   "scripts": {
     "generate-parser": "node src/grammar/generate.js",
