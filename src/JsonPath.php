@@ -30,24 +30,31 @@ class JsonPath
 		return "[{$segment}]";
 	}
 
-	public function paths($json)
+	public function paths($json): array
 	{
-		$result_node_list = run($json, $this->root_node);
+		$path_segments = $this->path_segments($json);
 		return array_map(
-			fn (Node $node) => [
-				'value' => $node->value,
-				'path' => implode(array_map(fn ($segment) => $this->convert_path_segment_to_string($segment), $node->path)),
-			],
-			$result_node_list,
+			fn($result) => new PathResult(
+				$result->value,
+				'$' .
+					join(
+						'',
+						array_map(
+							fn($result) => $this->convert_path_segment_to_string($result),
+							$result->segments,
+						),
+					),
+			),
+			$path_segments,
 		);
 	}
 
-	public function pathSegments($json)
+	public function path_segments($json): array
 	{
 		$result_node_list = run($json, $this->root_node);
-		return array_map(fn (Node $node) => [
-			'value' => $node->value,
-			'segments' => array_slice($node->path, 1)
-		], $result_node_list);
+		return array_map(
+			fn(Node $node) => new PathSegmentsResult($node->value, array_slice($node->path, 1)),
+			$result_node_list,
+		);
 	}
 }
