@@ -6,10 +6,12 @@ use Loilo\JsonPath\Array;
 
 class Node
 {
-	public function __construct(public mixed $value, public string $path) {}
+	public function __construct(public mixed $value, public array $path)
+	{
+	}
 }
 
-function create_node(mixed $json, string $path): Node
+function create_node(mixed $json, array $path): Node
 {
 	return new Node($json, $path);
 }
@@ -18,12 +20,12 @@ function add_member_path(Node $base, mixed $new_value, string $member_name): Nod
 {
 	$escaped_member_name = escape_member_name($member_name);
 
-	return create_node($new_value, "{$base->path}['{$escaped_member_name}']");
+	return create_node($new_value, [...$base->path, $escaped_member_name]);
 }
 
 function add_index_path(Node $base, mixed $new_value, int $index): Node
 {
-	return create_node($new_value, "{$base->path}[{$index}]");
+	return create_node($new_value, [...$base->path, $index]);
 }
 
 function is_node($node)

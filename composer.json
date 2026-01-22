@@ -33,6 +33,8 @@
             "src/parsers/filter-selector.php",
             "src/types/nothing.php",
             "src/types/node.php",
+            "src/types/path-result.php",
+            "src/types/path-segments-result.php",
             "src/PeggyParser.php",
             "src/parser.php",
             "src/JsonPath.php",

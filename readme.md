@@ -38,18 +38,85 @@ $result = $query->find([
 	],
 ]);
 
-var_dump($result);
+print_r($result);
 
 /*
 Prints:
 
-array(2) {
-  [0]=>
-  string(8) "John Doe"
-  [1]=>
-  string(8) "Jane Doe"
-}
+Array
+(
+	[0] => John Doe
+	[1] => Jane Doe
+)
 */
+
+$path_result = $query->paths([
+	'users' => [
+		[ 'name' => 'John Doe' ],
+		[ 'name' => 'Jane Doe' ],
+	],
+]);
+
+print_r($path_result);
+
+/*
+Prints:
+
+Array
+(
+	[0] => Loilo\JsonPath\PathResult Object
+		(
+			[value] => John Doe
+			[path] => $['users'][0]['name']
+		)
+
+	[1] => Loilo\JsonPath\PathResult Object
+		(
+			[value] => Jane Doe
+			[path] => $['users'][1]['name']
+		)
+)
+*/
+
+
+$path_segments_result = $query->path_segments([
+	'users' => [
+		[ 'name' => 'John Doe' ],
+		[ 'name' => 'Jane Doe' ],
+	],
+]);
+
+print_r($path_segments_result);
+
+/*
+Prints:
+
+Array
+(
+	[0] => Loilo\JsonPath\PathSegmentsResult Object
+		(
+			[value] => John Doe
+			[segments] => Array
+				(
+					[0] => users
+					[1] => 0
+					[2] => name
+				)
+		)
+
+	[1] => Loilo\JsonPath\PathSegmentsResult Object
+		(
+			[value] => Jane Doe
+			[segments] => Array
+				(
+					[0] => users
+					[1] => 1
+					[2] => name
+				)
+		)
+)
+*/
+
 ```
 
 ## Development
