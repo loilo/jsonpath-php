@@ -2,7 +2,7 @@
     "name": "loilo/jsonpath",
     "description": "Runs RFC9535 compatible JSONPath queries against a data set",
     "type": "library",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "license": "MIT",
     "authors": [
         {
