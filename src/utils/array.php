@@ -1,6 +1,6 @@
 <?php
 
-namespace Loilo\JsonPath\Array;
+namespace Loilo\JsonPath\Arr;
 
 /**
  * Flatten a multi-dimensional array by a given number of levels

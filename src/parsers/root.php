@@ -18,7 +18,7 @@ function apply_segments(array $segments, $root_node, $node_list)
 	$result = array_reduce(
 		$segments,
 		function ($result_node_list, $current_segment) use ($root_node) {
-			return Array\flat_map(
+			return Arr\flat_map(
 				fn($node) => apply_segment($current_segment, $root_node, $node),
 				$result_node_list,
 			);
@@ -39,7 +39,7 @@ function apply_segment($segment, $root_node, Node $node)
 		$selector_results = array_map(function ($selector) use ($root_node, $node) {
 			return apply_selector($selector, $root_node, $node);
 		}, $segment);
-		$segment_result = Array\flatten($selector_results);
+		$segment_result = Arr\flatten($selector_results);
 
 		return $segment_result;
 	}
@@ -47,8 +47,8 @@ function apply_segment($segment, $root_node, Node $node)
 	// DescendantSegment
 	$descendant_nodes = traverse_descendant($node);
 
-	return Array\flat_map(
-		fn($node) => Array\flat_map(
+	return Arr\flat_map(
+		fn($node) => Arr\flat_map(
 			fn($selector) => apply_selector($selector, $root_node, $node),
 			$segment->selectors,
 		),
@@ -118,7 +118,7 @@ function apply_index_selector($selector, Node $node)
 		return [];
 	}
 
-	$index = Array\normalize_index($selector->index, sizeof($node->value));
+	$index = Arr\normalize_index($selector->index, sizeof($node->value));
 
 	return $index === null ? [] : [add_index_path($node, $node->value[$index], $index)];
 }

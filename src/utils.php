@@ -23,7 +23,7 @@ function json_get($value, $key)
  */
 function is_json_object($value): bool
 {
-	return (is_array($value) && !Array\is_list($value)) || $value instanceof \stdClass;
+	return (is_array($value) && !Arr\is_list($value)) || $value instanceof \stdClass;
 }
 
 /**
@@ -39,7 +39,7 @@ function is_json_primitive($value): bool
  */
 function is_json_array($value): bool
 {
-	return is_array($value) && Array\is_list($value);
+	return is_array($value) && Arr\is_list($value);
 }
 
 /**

@@ -13,7 +13,7 @@ function apply_filter_selector($selector, $root_node, Node $node)
 		return [];
 	}
 
-	return Array\filter(enumerate_node($node), function (Node $node) use ($selector, $root_node) {
+	return Arr\filter(enumerate_node($node), function (Node $node) use ($selector, $root_node) {
 		return apply_filter_expression($selector->expr, $root_node, $node);
 	});
 }

@@ -2,13 +2,11 @@
 
 namespace Loilo\JsonPath;
 
-use Loilo\JsonPath\Array;
+use Loilo\JsonPath\Arr;
 
 class Node
 {
-	public function __construct(public mixed $value, public array $path)
-	{
-	}
+	public function __construct(public mixed $value, public array $path) {}
 }
 
 function create_node(mixed $json, array $path): Node
@@ -35,8 +33,8 @@ function is_node($node)
 
 function is_node_list($obj)
 {
-	if (!Array\is_list($obj)) {
+	if (!Arr\is_list($obj)) {
 		return false;
 	}
-	return Array\every($obj, __NAMESPACE__ . '\is_node');
+	return Arr\every($obj, __NAMESPACE__ . '\is_node');
 }
